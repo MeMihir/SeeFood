@@ -7,6 +7,17 @@
     display: flex;
     justify-content: space-evenly;
     transition: ease 1s;
+    margin-top: 3%;
+
+    .carousel {
+      width: 40%;
+      z-index: 2;
+      position: relative;
+
+      .slide, .selected {
+        background-color: transparent !important;
+      }
+    }
   }
 }
 

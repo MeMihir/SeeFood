@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import "./App.scss";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Background from "./components/Background/Background";
 import Card from "./components/Card/uploadCard";
 import Details from "./components/Card/detailsCard";
 import * as tf from "@tensorflow/tfjs";
+import { Carousel } from "react-responsive-carousel";
 import { class_mapping } from "./class_mapping";
 
 export default class App extends Component {
@@ -80,10 +82,16 @@ export default class App extends Component {
               />
             </div>
             {this.state.top5.length > 0 ? (
-              <Details
-                name={class_mapping[this.state.top5[0]].split("_").join(" ")}
-                confidence={this.state.result[this.state.top5[0]]}
-              />
+              <div className="carousel">
+                <Carousel infiniteLoop={true} emulateTouch={true} swipeable={true}>
+                  {this.state.top5.map((indx) => (
+                    <Details
+                      name={class_mapping[indx].split("_").join(" ")}
+                      confidence={this.state.result[indx]}
+                    />
+                  ))}
+                </Carousel>
+              </div>
             ) : null}
           </div>
         </div>
