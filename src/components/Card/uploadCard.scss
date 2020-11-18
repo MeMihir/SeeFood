@@ -1,5 +1,5 @@
-  .card{
-    width: 60%;
+  .upload-card{
+    width: 30%;
     height: 100%;
     padding: 15px;
     // margin-top: 40px;
@@ -50,11 +50,11 @@
         border-radius: 15px;
       }
       .img-upload:before{
-        content: "\f093";
+        content: url(browse.png);
         font-size: 90px;
         position: absolute;
         padding-top: 80px;
-        top: 50%;
+        top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;

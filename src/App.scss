@@ -1,6 +1,13 @@
 .App {
   text-align: center;
-  padding: 2%;
+  padding: 1%;
+
+  .Cards {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    transition: ease 1s;
+  }
 }
 
 .App-header {
@@ -9,6 +16,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(50px + 2vmin);
   color: white;
+}
+
+h4 {
+  color: white;
+  margin-bottom: -1rem;
 }

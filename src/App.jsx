@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import "./App.scss";
 import Background from "./components/Background/Background";
-import Card from "./components/Upload/card";
+import Card from "./components/Card/uploadCard";
+import Details from "./components/Card/detailsCard";
 import * as tf from "@tensorflow/tfjs";
-import { class_mapping } from './class_mapping';
+import { class_mapping } from "./class_mapping";
 
 export default class App extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export default class App extends Component {
       model: undefined,
       img: undefined,
       result: [],
+      top5: [],
     };
     this.predict = this.predict.bind(this);
   }
@@ -24,25 +26,26 @@ export default class App extends Component {
         .toFloat()
         .expandDims();
       const result = await this.state.model.predict(tensorImg).data();
+      const top5 = this.findIndicesOfMax(result, 5);
       this.setState({
         result,
-        img: tensorImg,
+        top5,
       });
-      const top5 = this.findIndicesOfMax(result,5);
-      top5.forEach(i => console.log(class_mapping[i], result[i]));
     } catch (error) {
       console.log(error);
     }
   }
 
-  findIndicesOfMax(inp, count=5) {
+  findIndicesOfMax(inp, count = 5) {
     var outp = [];
     for (var i = 0; i < inp.length; i++) {
-        outp.push(i); // add index to output array
-        if (outp.length > count) {
-            outp.sort((a, b) => { return inp[b] - inp[a]; }); // descending sort the output array
-            outp.pop(); // remove the last index (index of smallest element in output array)
-        }
+      outp.push(i); // add index to output array
+      if (outp.length > count) {
+        outp.sort((a, b) => {
+          return inp[b] - inp[a];
+        }); // descending sort the output array
+        outp.pop(); // remove the last index (index of smallest element in output array)
+      }
     }
     return outp;
   }
@@ -62,8 +65,26 @@ export default class App extends Component {
         <div className="App">
           <Background />
           <header className="App-header">SeeFood</header>
-          <div className="card">
-            <Card predict={this.predict} />
+          <h4>its like Shazaam for Food!!</h4>
+          <div className="Cards">
+            <div className="upload-card">
+              <Card
+                predict={this.predict}
+                newImage={() => {
+                  this.setState({
+                    img: undefined,
+                    result: [],
+                    top5: [],
+                  });
+                }}
+              />
+            </div>
+            {this.state.top5.length > 0 ? (
+              <Details
+                name={class_mapping[this.state.top5[0]].split("_").join(" ")}
+                confidence={this.state.result[this.state.top5[0]]}
+              />
+            ) : null}
           </div>
         </div>
       </div>
