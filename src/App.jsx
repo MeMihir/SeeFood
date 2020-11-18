@@ -5,6 +5,7 @@ import Background from "./components/Background/Background";
 import Card from "./components/Card/uploadCard";
 import Details from "./components/Card/detailsCard";
 import * as tf from "@tensorflow/tfjs";
+import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
 import { class_mapping } from "./class_mapping";
 
@@ -29,6 +30,21 @@ export default class App extends Component {
         .expandDims();
       const result = await this.state.model.predict(tensorImg).data();
       const top5 = this.findIndicesOfMax(result, 5);
+      for (let indx = 0; indx < top5.length; indx++) {
+        const { data } = await axios.get(
+          "https://cors-anywhere.herokuapp.com/https://api.spoonacular.com/recipes/guessNutrition",
+          {
+            params: {
+              title: class_mapping[top5[indx]].split("_").join(" "),
+              apiKey: process.env.REACT_APP_FOODKEY,
+            },
+          }
+        );
+        data.name = class_mapping[top5[indx]];
+        data.confidence = result[top5[indx]];
+        top5[indx] = data;
+      }
+
       this.setState({
         result,
         top5,
@@ -41,12 +57,12 @@ export default class App extends Component {
   findIndicesOfMax(inp, count = 5) {
     var outp = [];
     for (var i = 0; i < inp.length; i++) {
-      outp.push(i); // add index to output array
+      outp.push(i);
       if (outp.length > count) {
         outp.sort((a, b) => {
           return inp[b] - inp[a];
-        }); // descending sort the output array
-        outp.pop(); // remove the last index (index of smallest element in output array)
+        });
+        outp.pop();
       }
     }
     return outp;
@@ -84,10 +100,9 @@ export default class App extends Component {
             {this.state.top5.length > 0 ? (
               <div className="carousel">
                 <Carousel infiniteLoop={true} emulateTouch={true} swipeable={true}>
-                  {this.state.top5.map((indx) => (
+                  {this.state.top5.map((item) => (
                     <Details
-                      name={class_mapping[indx].split("_").join(" ")}
-                      confidence={this.state.result[indx]}
+                      data={item}
                     />
                   ))}
                 </Carousel>
