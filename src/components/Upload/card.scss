@@ -10,9 +10,8 @@
     background: #fff;
     animation: open .5s;
     margin: 3% auto;
-    .profile {
-      // width: 80%;
-    }
+    position: relative;
+    z-index: 2;
 
     form{
         width: 100%;
@@ -97,11 +96,9 @@
       }
       
       button{
-        width: 0;
         position: relative;
         color: #181818;
         letter-spacing: 1px;
-        margin: 20px;
         font-size: 18px;
         padding: 10px;
         text-align: center;
@@ -111,13 +108,13 @@
         border-radius: 25px;
         border: none;
         background: #fff;
+        width: 180px;
       }
       .save{
         font-weight: 600;
-        left: -20px;
         text-transform: uppercase;
         letter-spacing: 1px;
-        width: 20px;
+        width: 180px;
         box-shadow: 20px 0px 40px 0px  #eaeaea;
       }
       .edit{

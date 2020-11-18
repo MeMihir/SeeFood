@@ -1,89 +1,126 @@
 import React from "react";
-import './card.scss'
+import "./card.scss";
 
-const ImgUpload =({
-  onChange,
-  src
-})=>
+const ImgUpload = ({ onChange, src }) => (
   <label htmlFor="photo-upload" className="custom-file-upload fas">
-    <div className="img-wrap img-upload" >
-      <img for="photo-upload" src={src}/>
+    <div className="img-wrap img-upload">
+      <img
+        // crossOrigin=""
+        alt="img"
+        id="image"
+        htmlFor="photo-upload"
+        src={src}
+      />
     </div>
-    <input id="photo-upload" type="file" onChange={onChange}/> 
+    <input id="photo-upload" type="file" onChange={onChange} />
   </label>
+);
 
-const Edit =({
-  onSubmit,
-  children,
-})=>
+const Url = ({ onChange, value }) => (
+  <div className="field">
+    <label htmlFor="url">Enter URL:</label>
+    <input
+      id="url"
+      type="text"
+      onChange={onChange}
+      value={value}
+      placeholder="www.test.com/testimg.jpg"
+    />
+  </div>
+);
+
+const Edit = ({ onSubmit, children }) => (
   <div className="profile">
     <form onSubmit={onSubmit}>
       <h1>Upload Food Image</h1>
-        {children}
-      <button type="submit" className="save">Identify </button>
+      {children}
+
+      <button type="submit" className="save">
+        Identify{" "}
+      </button>
     </form>
   </div>
+);
 
-const Profile =({
-  onSubmit,
-  src,
-})=>
+const Profile = ({ onSubmit, src }) => (
   <div className="profile">
     <form onSubmit={onSubmit}>
       <h1>Food Details</h1>
       <label className="custom-file-upload fas">
-        <div className="img-wrap" >
-          <img for="photo-upload" src={src}/>
+        <div className="img-wrap">
+          <img
+            // crossOrigin=""
+            alt="img"
+            id="image"
+            htmlFor="photo-upload"
+            src={src}
+          />
         </div>
       </label>
-      <button type="submit" className="edit">Change</button>
+      <button type="submit" className="edit">
+        Change
+      </button>
     </form>
   </div>
+);
 
 export default class CardProfile extends React.Component {
   state = {
-    file: '',
-    imagePreviewUrl: './image.png',
-    name:'',
-    status:'',
-    active: 'edit'
-  }
+    file: "",
+    imagePreviewUrl: "./image.png",
+    url: "",
+    status: "",
+    active: "edit",
+  };
 
-  photoUpload = e =>{
+  photoUpload = (e) => {
     e.preventDefault();
     const reader = new FileReader();
     const file = e.target.files[0];
     reader.onloadend = () => {
       this.setState({
         file: file,
-        imagePreviewUrl: reader.result
+        imagePreviewUrl: reader.result,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  handleURLChange = async (e) => {
+    await this.setState({
+      imagePreviewUrl: e.target.value,
+      url: e.target.value,
+    });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.state.active === "edit") {
+      this.setState({
+        active: "",
+      });
+      const img = document.getElementById("image");
+      this.props.predict(img);
+    } else {
+      this.setState({
+        active: "edit",
       });
     }
-    reader.readAsDataURL(file);
-  }
+  };
 
-  handleSubmit= e =>{
-    e.preventDefault();
-    let activeP = this.state.active === 'edit' ? 'profile' : 'edit';
-    this.setState({
-      active: activeP,
-    })
-  }
-  
   render() {
-    const {imagePreviewUrl, active} = this.state;
+    const { imagePreviewUrl, active, url } = this.state;
     return (
-      <div style={{width:'80%'}}>
-        {(active === 'edit')?(
+      <div style={{ width: "80%" }}>
+        {active === "edit" ? (
           <Edit onSubmit={this.handleSubmit}>
-            <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl}/>
+            <ImgUpload onChange={this.photoUpload} src={imagePreviewUrl} />
+            <Url onChange={this.handleURLChange} value={url} />
           </Edit>
-        ):(
-          <Profile 
-            onSubmit={this.handleSubmit} 
-            src={imagePreviewUrl}/>
+        ) : (
+          <Profile onSubmit={this.handleSubmit} src={imagePreviewUrl} />
         )}
       </div>
-    )
+    );
   }
 }
