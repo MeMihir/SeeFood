@@ -1,2 +1,5 @@
 # SeeFood
 its like Shazam for Food!!! Model trained using tensorflow and deployed as tfjs model with reactjs.
+You see a food item and are not sure what it is, you just pull out this app and it will tell you all you need to know about it, the  nutrition data, recipe, etc.
+Currently at an accuracy of 65% with Inception Net V3 architecture after training on [Food-101](http://data.vision.ee.ethz.ch/cvl/food-101.tar.gz). Converted to a tensorflow.js model and deployed with ReactJS frontend. The nutrition data is made available through [Spoonacular API](https://spoonacular.com/food-api).
+Will try to improve the accuracy of the model and add more data about the food items themselves soon. Plus add proper documentations and steps in the python notebook explaining the steps and approach in more detail.
