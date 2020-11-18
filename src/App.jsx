@@ -4,6 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Background from "./components/Background/Background";
 import Card from "./components/Card/uploadCard";
 import Details from "./components/Card/detailsCard";
+import Loading from "./components/loading/loading";
 import * as tf from "@tensorflow/tfjs";
 import axios from "axios";
 import { Carousel } from "react-responsive-carousel";
@@ -17,12 +18,14 @@ export default class App extends Component {
       img: undefined,
       result: [],
       top5: [],
+      loading: true,
     };
     this.predict = this.predict.bind(this);
   }
 
   async predict(img) {
     try {
+      this.setState({ loading: true });
       const tensorImg = tf.browser
         .fromPixels(img)
         .resizeNearestNeighbor([299, 299])
@@ -32,7 +35,7 @@ export default class App extends Component {
       const top5 = this.findIndicesOfMax(result, 5);
       for (let indx = 0; indx < top5.length; indx++) {
         const { data } = await axios.get(
-          "https://cors-anywhere.herokuapp.com/https://api.spoonacular.com/recipes/guessNutrition",
+          "https://api.spoonacular.com/recipes/guessNutrition",
           {
             params: {
               title: class_mapping[top5[indx]].split("_").join(" "),
@@ -48,6 +51,7 @@ export default class App extends Component {
       this.setState({
         result,
         top5,
+        loading: false,
       });
     } catch (error) {
       console.log(error);
@@ -71,7 +75,7 @@ export default class App extends Component {
   async componentDidMount() {
     try {
       const model = await tf.loadLayersModel("./model/model.json");
-      this.setState({ model });
+      this.setState({ model, loading: false });
     } catch (error) {
       console.log(error);
     }
@@ -80,6 +84,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="area">
+        {this.state.loading ? <Loading /> : null}
         <div className="App">
           <Background />
           <header className="App-header">SeeFood</header>
@@ -99,11 +104,13 @@ export default class App extends Component {
             </div>
             {this.state.top5.length > 0 ? (
               <div className="carousel">
-                <Carousel infiniteLoop={true} emulateTouch={true} swipeable={true}>
+                <Carousel
+                  infiniteLoop={true}
+                  emulateTouch={true}
+                  swipeable={true}
+                >
                   {this.state.top5.map((item) => (
-                    <Details
-                      data={item}
-                    />
+                    <Details data={item} />
                   ))}
                 </Carousel>
               </div>
