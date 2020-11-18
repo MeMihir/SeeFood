@@ -104,6 +104,8 @@ export default class CardProfile extends React.Component {
     } else {
       this.setState({
         active: "edit",
+        imagePreviewUrl: "./image.png",
+        url: ''
       });
     }
   };

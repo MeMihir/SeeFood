@@ -3,6 +3,7 @@ import "./App.scss";
 import Background from "./components/Background/Background";
 import Card from "./components/Upload/card";
 import * as tf from "@tensorflow/tfjs";
+import { class_mapping } from './class_mapping';
 
 export default class App extends Component {
   constructor(props) {
@@ -27,9 +28,23 @@ export default class App extends Component {
         result,
         img: tensorImg,
       });
+      const top5 = this.findIndicesOfMax(result,5);
+      top5.forEach(i => console.log(class_mapping[i], result[i]));
     } catch (error) {
       console.log(error);
     }
+  }
+
+  findIndicesOfMax(inp, count=5) {
+    var outp = [];
+    for (var i = 0; i < inp.length; i++) {
+        outp.push(i); // add index to output array
+        if (outp.length > count) {
+            outp.sort((a, b) => { return inp[b] - inp[a]; }); // descending sort the output array
+            outp.pop(); // remove the last index (index of smallest element in output array)
+        }
+    }
+    return outp;
   }
 
   async componentDidMount() {
