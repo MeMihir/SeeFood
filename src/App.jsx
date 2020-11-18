@@ -1,14 +1,16 @@
 import "./App.scss";
-import Background from './components/Background';
+import Background from "./components/Background/Background";
+import Card from './components/Upload/card';
 
 function App() {
   return (
-    <div className="App">
-      <div class="area">
-        <header className="App-header">
-        SeeFood
-        </header>
-        <Background/>
+    <div class="area">
+      <div className="App">
+        <Background />
+        <header className="App-header">SeeFood</header>
+        <div className="card">
+        <Card />
+        </div>
       </div>
     </div>
   );
