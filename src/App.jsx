@@ -88,7 +88,7 @@ export default class App extends Component {
         <div className="App">
           <Background />
           <header className="App-header">SeeFood</header>
-          <h4>its like Shazaam for Food!!</h4>
+          <h4>its like Shazam for Food!!</h4>
           <div className="Cards">
             <div className="upload-card">
               <Card
