@@ -4,7 +4,7 @@ import "./uploadCard.scss";
 const ImgUpload = ({ onChange, src }) => (
   <label htmlFor="photo-upload" className="custom-file-upload fas">
     <div className="img-wrap img-upload">
-      <img alt="img" id="image" htmlFor="photo-upload" src={src} />
+      <img crossOrigin="" alt="img" id="image" htmlFor="photo-upload" src={src} />
     </div>
     <input id="photo-upload" type="file" onChange={onChange} />
   </label>
@@ -42,7 +42,7 @@ const Profile = ({ onSubmit, src }) => (
       <h1>Food Details</h1>
       <label className="custom-file-upload fas">
         <div className="img-wrap">
-          <img alt="img" id="image" htmlFor="photo-upload" src={src} />
+          <img crossOrigin="" alt="img" id="image" htmlFor="photo-upload" src={src} />
         </div>
       </label>
       <button type="submit" className="edit">

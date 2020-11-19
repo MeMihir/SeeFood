@@ -54,6 +54,7 @@ export default class App extends Component {
         loading: false,
       });
     } catch (error) {
+      this.setState({ loading: false });
       console.log(error);
     }
   }
@@ -77,6 +78,7 @@ export default class App extends Component {
       const model = await tf.loadLayersModel("./model/model.json");
       this.setState({ model, loading: false });
     } catch (error) {
+      this.setState({ loading: false });
       console.log(error);
     }
   }
