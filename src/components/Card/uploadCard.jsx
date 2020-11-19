@@ -4,7 +4,17 @@ import "./uploadCard.scss";
 const ImgUpload = ({ onChange, src }) => (
   <label htmlFor="photo-upload" className="custom-file-upload fas">
     <div className="img-wrap img-upload">
-      <img crossOrigin="" alt="img" id="image" htmlFor="photo-upload" src={src} />
+      <img
+        crossOrigin=""
+        alt="img"
+        id="image"
+        htmlFor="photo-upload"
+        src={
+          src.split(":")[0] === "data" || src==='./image.png'
+            ? src
+            : `https://cors-anywhere.herokuapp.com/${src}`
+        }
+      />
     </div>
     <input id="photo-upload" type="file" onChange={onChange} />
   </label>
@@ -42,7 +52,17 @@ const Profile = ({ onSubmit, src }) => (
       <h1>Food Details</h1>
       <label className="custom-file-upload fas">
         <div className="img-wrap">
-          <img crossOrigin="" alt="img" id="image" htmlFor="photo-upload" src={src} />
+          <img
+            crossOrigin=""
+            alt="img"
+            id="image"
+            htmlFor="photo-upload"
+            src={
+              src.split(":")[0] === "data" || src==='./image.png'
+                ? src
+                : `https://cors-anywhere.herokuapp.com/${src}`
+            }
+          />
         </div>
       </label>
       <button type="submit" className="edit">
